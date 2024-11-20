@@ -18,7 +18,13 @@ function App() {
   const [search, setSearch] = useState('')
   const [filteredArticle, setFilteredArticle] = useState([])
   const [apiPost, setApiPost] = useState([])
+  const [newApiPost, setNewApiPost] = useState(apiPost)
   // const [newBody, setNewBody] = useState('')
+
+
+
+
+
 
   function fetchData(url = 'http://127.0.0.1:3000/posts') {
     fetch(url)
@@ -37,6 +43,20 @@ function App() {
   }
 
 
+  function removeApiPost(e) {
+    e.preventDefault()
+    const bIndex = Number(e.target.getAttribute('button-index'))
+    const removeNewApiPost = newApiPost.filter((post, index) => index !== bIndex)
+    setNewApiPost(removeNewApiPost)
+  }
+
+
+  useEffect(() => {
+    setNewApiPost(apiPost);
+
+
+  }, [apiPost]);
+
 
 
 
@@ -47,6 +67,8 @@ function App() {
     setFilteredArticle(searchArticle)
 
     fetchData()
+
+
 
   }, [article, search])
 
@@ -159,7 +181,7 @@ function App() {
 
         </div>
         <div>
-          {apiPost.map((post, index) => (
+          {newApiPost.map((post, index) => (
 
 
             <div>
@@ -167,7 +189,7 @@ function App() {
               <p>{post.content}</p>
               <img src={`http://127.0.0.1:3000/${post.image}`} />
               <p> {post.tags.join(", ")}</p>
-              <button type="submit" className="btn btn-primary" data-index={index} onClick={handleTrashTaskClick}>
+              <button type="submit" className="btn btn-primary" button-index={index} onClick={removeApiPost}>
                 Remove Post
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
                   <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
